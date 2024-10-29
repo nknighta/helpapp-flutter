@@ -1,0 +1,9 @@
+.vscode/
+.idea/
+.vscode/
+.dart_tool/
+android/
+build/
+web/
+
+.metadata
