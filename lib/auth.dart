@@ -1,21 +1,23 @@
 // profile_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:auto_route/annotations.dart';
 
-class ProfilePage extends StatefulWidget {
+@RoutePage()
+class AuthPage extends StatefulWidget {
   // プロフィールページ
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _AuthPageState createState() => _AuthPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _AuthPageState extends State<AuthPage> {
   int _selectedIndex = 2; // BottomNavigationBarの選択されたインデックス
 
   void _onItemTapped(int index) {
     // ナビゲーションの処理
     switch (index) {
       case 0:
-        Navigator.pushReplacementNamed(context, '/chat');
+        Navigator.pushReplacementNamed(context, '/map');
         break;
       case 1:
         Navigator.pushReplacementNamed(context, '/');
@@ -34,16 +36,14 @@ class _ProfilePageState extends State<ProfilePage> {
     // UIの構築
     return Scaffold(
       appBar: AppBar(
-        title: Text('プロフィールページ'),
+        title: Text('ログイン'),
       ),
-      body: Center(
-        child: Text('ここはプロフィールページです'),
-      ),
+      body: (Text('ログインしてください')),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'チャット',
+            icon: Icon(Icons.map),
+            label: 'マップ',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

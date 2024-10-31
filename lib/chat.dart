@@ -1,7 +1,8 @@
 // chat.dart
-
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class ChatPage extends StatefulWidget {
   // チャットページ
   @override
@@ -15,10 +16,10 @@ class _ChatPageState extends State<ChatPage> {
     // ナビゲーションの処理
     switch (index) {
       case 0:
-        Navigator.pushReplacementNamed(context, '/chat');
+        Navigator.pushReplacementNamed(context, '/map');
         break;
       case 1:
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/home');
         break;
       case 2:
         Navigator.pushReplacementNamed(context, '/profile');
@@ -33,9 +34,6 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     // UIの構築
     return Scaffold(
-      appBar: AppBar(
-        title: Text('チャットページ'),
-      ),
       body: Center(
         child: Text('ここはチャットページです'),
       ),
@@ -47,7 +45,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'ホーム',
+            label: '戻る',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

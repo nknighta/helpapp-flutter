@@ -1,7 +1,8 @@
 // map.dart
-
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class MapPage extends StatefulWidget {
   // マップページ
   @override
@@ -9,13 +10,13 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  int _selectedIndex = 1; // BottomNavigationBarの選択されたインデックス
+  int _selectedIndex = 0; // BottomNavigationBarの選択されたインデックス
 
   void _onItemTapped(int index) {
     // ナビゲーションの処理
     switch (index) {
       case 0:
-        Navigator.pushReplacementNamed(context, '/chat');
+        Navigator.pushReplacementNamed(context, '/map');
         break;
       case 1:
         Navigator.pushReplacementNamed(context, '/');
@@ -33,30 +34,8 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     // UIの構築
     return Scaffold(
-      appBar: AppBar(
-        title: Text('マップページ'),
-      ),
       body: Center(
         child: Text('ここはマップページです'),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'チャット',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'ホーム',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'プロフィール',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
       ),
     );
   }
