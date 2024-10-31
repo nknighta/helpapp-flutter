@@ -10,7 +10,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  int _selectedIndex = 0; // BottomNavigationBarの選択されたインデックス
+  int _selectedIndex = 1; // BottomNavigationBarの選択されたインデックス
 
   void _onItemTapped(int index) {
     // ナビゲーションの処理
@@ -19,7 +19,7 @@ class _MapPageState extends State<MapPage> {
         Navigator.pushReplacementNamed(context, '/map');
         break;
       case 1:
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/home');
         break;
       case 2:
         Navigator.pushReplacementNamed(context, '/profile');

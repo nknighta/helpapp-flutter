@@ -35,9 +35,6 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     // UIの構築
     return Scaffold(
-      appBar: AppBar(
-        title: Text('ログイン'),
-      ),
       body: (Text('ログインしてください')),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

@@ -4,36 +4,41 @@ import 'package:help_app/app_router.dart';
 
 @RoutePage()
 class RootPage extends StatelessWidget {
-  const RootPage ({super.key});
+  const RootPage({super.key});
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(
       routes: const [
-        HomeRoute(),
-        MapRoute(),
-        ChatRoute(),
+        MapRoute(), //マップ
+        HomeRoute(), //ホーム
+        ProfileRoute(), //チャット
       ],
       builder: (context, child) {
         final tabsRouter = context.tabsRouter;
-        return(
-          Scaffold(
-            body: child,
-            bottomNavigationBar: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'ホーム',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.map),
-                  label: 'マップ',
-                )
-              ],
-              currentIndex: tabsRouter.activeIndex,
-              onTap: tabsRouter.setActiveIndex,
-            ),
-          )
-        );
+        return (Scaffold(
+          appBar: AppBar(
+            title: Text('まちなか'),
+          ),
+          body: child,
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.map), // ホーム遷移
+                label: 'マップ',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home), // マップ遷移
+                label: 'ホーム',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.face), // チャット遷移
+                label: 'プロフィール',
+              )
+            ],
+            currentIndex: tabsRouter.activeIndex,
+            onTap: tabsRouter.setActiveIndex,
+          ),
+        ));
       },
     );
   }
