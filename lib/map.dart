@@ -4,36 +4,18 @@ import 'package:flutter/material.dart';
 
 @RoutePage()
 class MapPage extends StatefulWidget {
+  const MapPage({super.key});
   // マップページ
   @override
-  _MapPageState createState() => _MapPageState();
+  State<MapPage> createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> {
-  int _selectedIndex = 1; // BottomNavigationBarの選択されたインデックス
-
-  void _onItemTapped(int index) {
-    // ナビゲーションの処理
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/map');
-        break;
-      case 1:
-        Navigator.pushReplacementNamed(context, '/home');
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(context, '/profile');
-        break;
-    }
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     // UIの構築
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Text('ここはマップページです'),
       ),
