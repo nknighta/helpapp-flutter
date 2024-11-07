@@ -56,7 +56,8 @@
 		<array>
 		<!-- TODO Replace this value: -->
 		<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-		<string>com.googleusercontent.apps.645302889463-9pn23tecn2arfqi3ip9b4eis6m0u3bjc</string>
+		<!-- .envに記述されているものに置き換えられます -->
+		<string>REVERSED_CLIENT_ID</string>
 		<string>helpapp</string>
 		</array>
 	</dict>

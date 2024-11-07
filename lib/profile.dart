@@ -18,10 +18,11 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilepageState();
 }
 class _ProfilepageState extends State<ProfilePage> {
+  String? _userId;
 
   Future<void> _nativeGoogleSignIn() async {
     final GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId: dotenv.get('IOS_CLIENT_ID'),
+      clientId: Platform.isAndroid ? dotenv.get('ANDROID_CLIENT_ID') : dotenv.get('IOS_CLIENT_ID'),
       serverClientId: dotenv.get('WEB_CLIENT_ID'),
     );
     final googleUser = await googleSignIn.signIn();
@@ -44,6 +45,16 @@ class _ProfilepageState extends State<ProfilePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    supabase.auth.onAuthStateChange.listen((data) {
+      setState(() {
+        _userId = data.session?.user.id;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     // UIの構築
     return Scaffold(
@@ -51,11 +62,11 @@ class _ProfilepageState extends State<ProfilePage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text('ログインして情報をみる'),
+          Text(_userId ?? 'ログインして情報をみる'),
           ElevatedButton(
             onPressed: () async {
               if(!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-                return _nativeGoogleSignIn();
+                await _nativeGoogleSignIn();
               } else {
                 await supabase.auth.signInWithOAuth(OAuthProvider.google);
               }
