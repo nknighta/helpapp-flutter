@@ -54,14 +54,16 @@
 		<string>Editor</string>
 		<key>CFBundleURLSchemes</key>
 		<array>
-		<!-- TODO Replace this value: -->
-		<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-		<!-- .envに記述されているものに置き換えられます -->
-		<string>REVERSED_CLIENT_ID</string>
-		<string>helpapp</string>
+			<!-- TODO Replace this value: -->
+			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+			<!-- .envから値を読み込む -->
+			<string>$(REVERSED_CLIENT_ID)</string>
+			<string>helpapp</string>
 		</array>
 	</dict>
 	</array>
+	<key>FLTEnableImpeller</key>
+	<false/>
 	<!-- End of the Google Sign-in Section -->
 
 </dict>
