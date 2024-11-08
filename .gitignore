@@ -136,4 +136,6 @@ app.*.symbols
 !/dev/ci/**/Gemfile.lock
 !.vscode/settings.json
 
+# environment
 *.env
+*env.g.dart

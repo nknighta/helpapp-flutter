@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/annotations.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:help_app/env/env.dart';
 import 'package:help_app/main.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,8 +22,8 @@ class _ProfilepageState extends State<ProfilePage> {
 
   Future<void> _nativeGoogleSignIn() async {
     final GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId: Platform.isAndroid ? dotenv.get('ANDROID_CLIENT_ID') : dotenv.get('IOS_CLIENT_ID'),
-      serverClientId: dotenv.get('WEB_CLIENT_ID'),
+      clientId: Platform.isAndroid ? Env.androidClientId : Env.iosClientId,
+      serverClientId: Env.webClientId,
     );
     final googleUser = await googleSignIn.signIn();
     final googleAuth = await googleUser!.authentication;

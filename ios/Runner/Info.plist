@@ -58,7 +58,6 @@
 			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
 			<!-- .envから値を読み込む -->
 			<string>$(REVERSED_CLIENT_ID)</string>
-			<string>helpapp</string>
 		</array>
 	</dict>
 	</array>

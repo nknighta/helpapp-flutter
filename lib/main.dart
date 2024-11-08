@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:help_app/env/env.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'appview_binder.dart';
 
 void main() async {
-  await dotenv.load(fileName: '.env');
   await Supabase.initialize(
-    url: dotenv.get('PUBLIC_SUPABASE_URL'),
-    anonKey: dotenv.get('PUBLIC_SUPABASE_ANON_KEY'),
+    url: Env.supabaseUrl,
+    anonKey: Env.anonKey,
   );
   runApp(const MyApp());
 }
