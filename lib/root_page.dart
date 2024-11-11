@@ -17,7 +17,7 @@ class RootPage extends StatelessWidget {
         final tabsRouter = context.tabsRouter;
         return (Scaffold(
           appBar: AppBar(
-            title: Text('まちなか'),
+            title: const Text('まちなか'),
           ),
           body: child,
           bottomNavigationBar: BottomNavigationBar(

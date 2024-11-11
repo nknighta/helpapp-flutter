@@ -10,6 +10,7 @@ class HomeRouterPage extends AutoRouter {
 
 @RoutePage()
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
     // UIの構築
@@ -21,7 +22,7 @@ class HomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () => context.navigateTo(const ChatRoute()),
-              child: Text('チャット'),
+              child: const Text('チャット'),
             ),
           ],
         ),
