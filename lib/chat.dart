@@ -13,7 +13,7 @@ class ChatPage extends StatelessWidget {
           child: Column(children: <Widget>[
         ElevatedButton(
           onPressed: () => context.navigateTo(const HomeRoute()),
-          child: Text('チャット'),
+          child: const Text('チャット'),
         ),
       ])),
     );

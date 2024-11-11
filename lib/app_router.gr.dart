@@ -23,7 +23,7 @@ class AuthRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return AuthPage();
+      return const AuthPage();
     },
   );
 }
@@ -42,7 +42,7 @@ class ChatRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return ChatPage();
+      return const ChatPage();
     },
   );
 }
@@ -61,7 +61,7 @@ class HomeRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return HomePage();
+      return const HomePage();
     },
   );
 }
@@ -99,7 +99,7 @@ class MapRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return MapPage();
+      return const MapPage();
     },
   );
 }
@@ -118,7 +118,7 @@ class ProfileRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return ProfilePage();
+      return const ProfilePage();
     },
   );
 }
