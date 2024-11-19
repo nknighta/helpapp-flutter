@@ -10,6 +10,9 @@ abstract class Env {
   @EnviedField(varName: 'PUBLIC_SUPABASE_ANON_KEY', obfuscate: true)
   static String anonKey = _Env.anonKey;
 
+  @EnviedField(varName: 'MAPBOX_PUBLIC_TOKEN', obfuscate: true)
+  static String mapboxToken = _Env.mapboxToken;
+
   @EnviedField(varName: 'WEB_CLIENT_ID')
   static String webClientId = _Env.webClientId;
 
