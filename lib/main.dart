@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:help_app/env/env.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'appview_binder.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  MapboxOptions.setAccessToken(Env.mapboxToken);
   await Supabase.initialize(
     url: Env.supabaseUrl,
     anonKey: Env.anonKey,
