@@ -24,6 +24,10 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       body: MapWidget(
         key: const ValueKey("mapWidget"),
+        cameraOptions: CameraOptions(
+          //center: Point(coordinates: Position(経度, 緯度)),
+          zoom: 14,
+        ),
         onMapCreated: _onMapCreated,
       ),
     );
