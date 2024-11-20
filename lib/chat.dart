@@ -12,8 +12,13 @@ class ChatPage extends StatelessWidget {
       body: SizedBox(
           child: Column(children: <Widget>[
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape:  const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+            ),
+          ),
           onPressed: () => context.navigateTo(const HomeRoute()),
-          child: const Text('チャット'),
+          child: const Text('戻る'),
         ),
       ])),
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:help_app/env/env.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
@@ -6,7 +7,10 @@ import 'appview_binder.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  MapboxOptions.setAccessToken(Env.mapboxToken);
+  if (!kIsWeb) {
+    MapboxOptions.setAccessToken(Env.mapboxToken);
+    MapboxMapsOptions.setLanguage("ja");
+  }
   await Supabase.initialize(
     url: Env.supabaseUrl,
     anonKey: Env.anonKey,
