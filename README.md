@@ -17,12 +17,19 @@ samples, guidance on mobile development, and a full API reference.
 
 ## 必要な操作
 .env の作成
-```py
-PUBLIC_SUPABASE_URL="supabaseのProjectURL"
-PUBLIC_SUPABASE_ANON_KEY="supabaseのProject API Key"
-WEB_CLIENT_ID="google cloudのclientID"
-IOS_CLIENT_ID="上に同じ"
-ANDROID_CLIENT_ID="上に同じ"
-# REVERSED_CLIENT_IDをXcodeに渡す設定が必要です:todo
-REVERSED_CLIENT_ID="IOS_CLIENT_IDのドメインを逆順にしたもの"
+```toml
+# Supabase
+PUBLIC_SUPABASE_URL={string型: SupabaseのURL}
+PUBLIC_SUPABASE_ANON_KEY={string型: SupabaseのAPI Key}
+
+# Google Cloud Platform
+WEB_CLIENT_ID={string型: Web用のclientID}
+IOS_CLIENT_ID={string型: IOS用のclientID}
+ANDROID_CLIENT_ID={string型: Android用のclientID}
+REVERSED_CLIENT_ID={string型: IOS_CLIENT_IDのドメインを逆順にしたもの}
+
+# Mapbox
+MAPBOX_PUBLIC_TOKEN={string型: Mapboxの公開トークン}
+DEFAULT_MAP_LNG={double型: 経度}
+DEFAULT_MAP_LAT={double型: 緯度}
 ```

@@ -24,4 +24,10 @@ abstract class Env {
 
   @EnviedField(varName: 'REVERSED_CLIENT_ID')
   static String reversedClientId = _Env.reversedClientId;
+
+  @EnviedField(varName: 'DEFAULT_MAP_LNG')
+  static double defaultMapLng = _Env.defaultMapLng;
+
+  @EnviedField(varName: 'DEFAULT_MAP_LAT')
+  static double defaultMapLat = _Env.defaultMapLat;
 }
