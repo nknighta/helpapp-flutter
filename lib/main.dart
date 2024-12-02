@@ -7,10 +7,18 @@ import 'appview_binder.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!kIsWeb) {
-    MapboxOptions.setAccessToken(Env.mapboxToken);
-    MapboxMapsOptions.setLanguage("ja");
+
+  // Web版では起動させない
+  if (kIsWeb) {
+    runApp(const MaterialApp(home: Scaffold(body: Center(
+      child: Text('このアプリはウェブ版に対応していません。'),
+    ),),),);
+    return;
   }
+
+  MapboxOptions.setAccessToken(Env.mapboxToken);
+  MapboxMapsOptions.setLanguage("ja");
+
   await Supabase.initialize(
     url: Env.supabaseUrl,
     anonKey: Env.anonKey,

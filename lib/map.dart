@@ -1,6 +1,7 @@
 // map.dart
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:help_app/env/env.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 @RoutePage()
@@ -25,7 +26,7 @@ class _MapPageState extends State<MapPage> {
       body: MapWidget(
         key: const ValueKey("mapWidget"),
         cameraOptions: CameraOptions(
-          //center: Point(coordinates: Position(経度, 緯度)),
+          center: Point(coordinates: Position(Env.defaultMapLng, Env.defaultMapLat)),
           zoom: 14,
         ),
         onMapCreated: _onMapCreated,
