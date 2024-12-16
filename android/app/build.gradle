@@ -10,6 +10,13 @@ def localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader("UTF-8") { reader ->
         localProperties.load(reader)
+
+        // SDK_REGISTRY_TOKENをgradle.propertiesに適用
+        localProperties.each { key, value ->
+            if (key == "SDK_REGISTRY_TOKEN") {
+                project.ext.set("local." + key, value)
+            }
+        }
     }
 }
 

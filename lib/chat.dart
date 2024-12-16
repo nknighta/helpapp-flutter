@@ -9,13 +9,56 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-          child: Column(children: <Widget>[
-        ElevatedButton(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => context.navigateTo(const HomeRoute()),
-          child: const Text('チャット'),
         ),
-      ])),
+        title: const Text('チャット'),
+        backgroundColor: const Color.fromARGB(255, 248, 248, 248),
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView(
+              children: const <Widget>[
+                // ここにメッセージリストを追加
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            color: Colors.grey[200],
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      hintText: 'メッセージを入力',
+                      border: InputBorder.none,
+                    ),
+                    onSubmitted: (text) {
+                      // 送信処理をここに追加
+                    },
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // 送信処理をここに追加
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape:  const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  ),
+                  child: const Text('送信'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -42,6 +42,8 @@ dependencies:
   sign_in_button: ^3.2.0
   supabase_flutter: ^2.8.0
   envied: ^0.5.4+1
+  mapbox_maps_flutter: ^2.4.0
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:

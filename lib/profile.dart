@@ -17,8 +17,10 @@ class ProfilePage extends StatefulWidget {
   @override
   State<ProfilePage> createState() => _ProfilepageState();
 }
+
 class _ProfilepageState extends State<ProfilePage> {
   String? _userId;
+  User? _user;
 
   Future<void> _nativeGoogleSignIn() async {
     final GoogleSignIn googleSignIn = GoogleSignIn(
@@ -50,31 +52,81 @@ class _ProfilepageState extends State<ProfilePage> {
     supabase.auth.onAuthStateChange.listen((data) {
       setState(() {
         _userId = data.session?.user.id;
+        _user = data.session?.user;
       });
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // UIの構築
+  // ログインしていない場合のUI
+  Widget _notLoggedInUI() {
     return Scaffold(
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(_userId ?? 'ログインして情報をみる'),
-          ElevatedButton(
-            onPressed: () async {
-              if(!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-                await _nativeGoogleSignIn();
-              } else {
-                await supabase.auth.signInWithOAuth(OAuthProvider.google);
-              }
-            },
-            child: const Text('Google login'),
-          ),
-        ],
-      )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text('未ログイン状態です'),
+            const SizedBox(height: 5),
+            ElevatedButton(
+              onPressed: () async {
+                if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+                  await _nativeGoogleSignIn();
+                } else {
+                  await supabase.auth.signInWithOAuth(OAuthProvider.google);
+                }
+              },
+              child: const Text('Google ログイン'),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  // ログインしている場合のUI
+  Widget _loggedInUI() {
+    final profileImageUrl = _user?.userMetadata?["avatar_url"];
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            if(profileImageUrl != null)
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(profileImageUrl),
+              )
+            else
+              const CircleAvatar(
+                radius: 50,
+                child: Icon(Icons.person, size: 50),
+              ),
+            const SizedBox(height: 5),
+            Text(
+              _user?.userMetadata?["full_name"] ?? "Unknown",
+              style: const TextStyle(fontSize: 24),
+            ),
+            const SizedBox(height: 10),
+            const Text('ログイン済みです'),
+            const SizedBox(height: 5),
+            ElevatedButton(
+              onPressed: () async {
+                await supabase.auth.signOut();
+              },
+              child: const Text('ログアウト'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // ログインしていない場合
+    if (_userId == null) {
+      return _notLoggedInUI();
+    } else {
+      return _loggedInUI();
+    }
   }
 }
