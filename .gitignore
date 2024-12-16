@@ -139,3 +139,9 @@ app.*.symbols
 # environment
 *.env
 *env.g.dart
+
+# firebase関連
+lib/firebase_options.dart
+android/app/google-services.json
+firebase.json
+ios/Runner/GoogleService-Info.plist
