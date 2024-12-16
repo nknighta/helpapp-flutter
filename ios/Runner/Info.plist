@@ -46,24 +46,20 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
-	<!-- Google Sign-in Section -->
+	<!-- Google Sign-In section -->
 	<key>CFBundleURLTypes</key>
 	<array>
-	<dict>
-		<key>CFBundleTypeRole</key>
-		<string>Editor</string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-			<!-- TODO Replace this value: -->
-			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-			<!-- .envから値を読み込む -->
-			<string>$(REVERSED_CLIENT_ID)</string>
-		</array>
-	</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+				<string>com.googleusercontent.apps.403408555411-47jp8555fkdunsnr7huaf3a0a868nqhq</string>
+			</array>
+		</dict>
 	</array>
-	<key>FLTEnableImpeller</key>
-	<false/>
-	<!-- End of the Google Sign-in Section -->
+	<!-- End of the Google Sign-In section -->
 
 </dict>
 </plist>

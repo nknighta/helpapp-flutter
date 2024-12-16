@@ -5,10 +5,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/annotations.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:help_app/env/env.dart';
-import 'package:help_app/main.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:help_app/util/authentication.dart';
 
 @RoutePage()
 class ProfilePage extends StatefulWidget {
@@ -19,41 +17,18 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilepageState extends State<ProfilePage> {
-  String? _userId;
   User? _user;
-
-  Future<void> _nativeGoogleSignIn() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId: Platform.isAndroid ? Env.androidClientId : Env.iosClientId,
-      serverClientId: Env.webClientId,
-    );
-    final googleUser = await googleSignIn.signIn();
-    final googleAuth = await googleUser!.authentication;
-    final accessToken = googleAuth.accessToken;
-    final idToken = googleAuth.idToken;
-
-    if (accessToken == null) {
-      throw 'No Access Token found.';
-    }
-    if (idToken == null) {
-      throw 'No ID Token found.';
-    }
-
-    await supabase.auth.signInWithIdToken(
-      provider: OAuthProvider.google,
-      idToken: idToken,
-      accessToken: accessToken,
-    );
-  }
 
   @override
   void initState() {
     super.initState();
-    supabase.auth.onAuthStateChange.listen((data) {
-      setState(() {
-        _userId = data.session?.user.id;
-        _user = data.session?.user;
-      });
+    _fetchUser();
+  }
+
+  Future<void> _fetchUser() async {
+    User? user = await Authentication.getUser();
+    setState(() {
+      _user = user;
     });
   }
 
@@ -69,9 +44,12 @@ class _ProfilepageState extends State<ProfilePage> {
             ElevatedButton(
               onPressed: () async {
                 if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-                  await _nativeGoogleSignIn();
+                  User? user = await Authentication.signInWithGoogle();
+                  setState(() {
+                    _user = user;
+                  });
                 } else {
-                  await supabase.auth.signInWithOAuth(OAuthProvider.google);
+                  // 非対応OSです
                 }
               },
               child: const Text('Google ログイン'),
@@ -84,7 +62,7 @@ class _ProfilepageState extends State<ProfilePage> {
 
   // ログインしている場合のUI
   Widget _loggedInUI() {
-    final profileImageUrl = _user?.userMetadata?["avatar_url"];
+    final profileImageUrl = _user?.photoURL;
     return Scaffold(
       body: Center(
         child: Column(
@@ -102,7 +80,7 @@ class _ProfilepageState extends State<ProfilePage> {
               ),
             const SizedBox(height: 5),
             Text(
-              _user?.userMetadata?["full_name"] ?? "Unknown",
+              _user?.displayName ?? "Unknown",
               style: const TextStyle(fontSize: 24),
             ),
             const SizedBox(height: 10),
@@ -110,7 +88,10 @@ class _ProfilepageState extends State<ProfilePage> {
             const SizedBox(height: 5),
             ElevatedButton(
               onPressed: () async {
-                await supabase.auth.signOut();
+                await Authentication.signOut();
+                setState(() {
+                  _user = null;
+                });
               },
               child: const Text('ログアウト'),
             ),
@@ -123,7 +104,7 @@ class _ProfilepageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     // ログインしていない場合
-    if (_userId == null) {
+    if (_user == null) {
       return _notLoggedInUI();
     } else {
       return _loggedInUI();

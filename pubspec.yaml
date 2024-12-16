@@ -40,10 +40,11 @@ dependencies:
   auto_route: ^9.2.2
   google_sign_in: ^6.2.2
   sign_in_button: ^3.2.0
-  supabase_flutter: ^2.8.0
   envied: ^0.5.4+1
   mapbox_maps_flutter: ^2.4.0
   http: ^1.2.2
+  firebase_auth: ^5.3.4
+  firebase_core: ^3.8.1
 
 dev_dependencies:
   flutter_test:
