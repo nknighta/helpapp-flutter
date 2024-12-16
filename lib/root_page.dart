@@ -11,13 +11,13 @@ class RootPage extends StatelessWidget {
       routes: const [
         MapRoute(), //マップ
         HomeRoute(), //ホーム
-        ProfileRoute(), //チャット
+        ProfileRoute(), //プロフィール
       ],
       builder: (context, child) {
         final tabsRouter = context.tabsRouter;
         return (Scaffold(
           appBar: AppBar(
-            title: const Text('まちなか'),
+            title: const Text("helpapp"),
           ),
           body: child,
           bottomNavigationBar: BottomNavigationBar(

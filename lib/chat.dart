@@ -15,6 +15,7 @@ class ChatPage extends StatelessWidget {
           onPressed: () => context.navigateTo(const HomeRoute()),
         ),
         title: const Text('チャット'),
+        backgroundColor: const Color.fromARGB(255, 248, 248, 248),
       ),
       body: Column(
         children: <Widget>[
