@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:help_app/app_router.dart';
 
-// import 'util/post.dart';
+import 'util/api_service.dart';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -55,6 +55,25 @@ class HomePage extends StatelessWidget {
                 onPressed: () => context.navigateTo(const ChatRoute()),
                 child: const Text(
                   'チャット',
+                  style: TextStyle(fontSize: 24),
+                ),
+              ),
+            ),
+            //todo
+            FractionallySizedBox(
+              widthFactor: 0.9,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(
+                    vertical: screenHeight * 0.1,
+                  ),
+                  shape:  const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                ),
+                onPressed: () => ApiService.getRequest(context, "https://helpapp-website.vercel.app/api/main"),
+                child: const Text(
+                  'GET テスト',
                   style: TextStyle(fontSize: 24),
                 ),
               ),
