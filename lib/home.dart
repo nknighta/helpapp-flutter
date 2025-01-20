@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:help_app/app_router.dart';
-
-import 'util/api_service.dart';
+import 'package:help_app/map.dart';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -59,25 +58,6 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            //todo
-            FractionallySizedBox(
-              widthFactor: 0.9,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(
-                    vertical: screenHeight * 0.1,
-                  ),
-                  shape:  const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                  ),
-                ),
-                onPressed: () => ApiService.getRequest(context, "https://helpapp-website.vercel.app/api/main"),
-                child: const Text(
-                  'GET テスト',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-            ),
           ],
         ),
       )
@@ -95,9 +75,10 @@ class HomePage extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
+                MapPageState.isPinEnabled.value = true;
                 parentContext.router.navigate(
-                  const HomeRouterRoute(children: [ChatRoute()]),
-              );
+                  const MapRoute(),
+                );
               },
               child: const Text("はい"),
             ),

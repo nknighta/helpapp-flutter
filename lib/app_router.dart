@@ -6,6 +6,7 @@ import 'home.dart';
 import 'map.dart';
 import 'root_page.dart';
 import 'profile.dart';
+// import 'package:flutter/foundation.dart';
 
 part 'app_router.gr.dart'; // Ensure this file is generated and _$AppRouter is a valid class
 
