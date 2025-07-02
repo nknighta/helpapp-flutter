@@ -1,0 +1,13 @@
+{
+  "name": "helpapp_client_runner",
+  "version": "0.1.2",
+  "repository": "https://github.com/nknighta/helpapp-flutter.git",
+  "author": "nknighta <n.knight.pc0627@gmail.com>",
+  "scripts": {
+    "devices": "flutter devices",
+    "dev": "flutter run",
+    "clean": "flutter clean",
+    "build": "flutter build apk",
+    "keys": "./android/gradlew.bat signingReport"
+  }
+}
