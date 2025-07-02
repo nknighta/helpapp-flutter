@@ -232,29 +232,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mobile menu toggle
     const addMobileMenu = () => {
+        const navMenu = document.querySelector('.nav-menu');
+        const navContainer = document.querySelector('.nav-container');
+        let menuToggle = document.querySelector('.mobile-menu-toggle');
+        
         if (window.innerWidth <= 768) {
-            const navMenu = document.querySelector('.nav-menu');
-            const navContainer = document.querySelector('.nav-container');
-            
-            const menuToggle = document.createElement('button');
-            menuToggle.innerHTML = '☰';
-            menuToggle.className = 'mobile-menu-toggle';
-            menuToggle.style.cssText = `
-                background: none;
-                border: none;
-                color: white;
-                font-size: 1.5rem;
-                cursor: pointer;
-                display: none;
-            `;
-            
-            if (window.innerWidth <= 768) {
-                menuToggle.style.display = 'block';
+            // Create button only if it doesn't exist
+            if (!menuToggle) {
+                menuToggle = document.createElement('button');
+                menuToggle.innerHTML = '☰';
+                menuToggle.className = 'mobile-menu-toggle';
+                menuToggle.style.cssText = `
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                `;
+                
                 navContainer.appendChild(menuToggle);
-                navMenu.style.display = 'none';
                 
                 menuToggle.addEventListener('click', () => {
-                    if (navMenu.style.display === 'none') {
+                    if (navMenu.style.display === 'none' || navMenu.style.display === '') {
                         navMenu.style.display = 'flex';
                         menuToggle.innerHTML = '✕';
                     } else {
@@ -263,10 +262,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             }
+            
+            menuToggle.style.display = 'block';
+            navMenu.style.display = 'none';
+        } else {
+            // Desktop view: show nav menu and hide toggle button
+            if (menuToggle) {
+                menuToggle.style.display = 'none';
+            }
+            navMenu.style.display = 'flex';
         }
     };
 
+    // Initialize mobile menu on page load
     addMobileMenu();
+
     window.addEventListener('resize', addMobileMenu);
 
     // Performance optimization: Lazy load images if any
