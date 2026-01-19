@@ -49,6 +49,7 @@ class _EmergencyCallScreenState extends State<EmergencyCallScreen> {
         _showError('ユーザー情報が取得できません');
         return;
       }
+      // 通知の初期化
 
       // Firebaseに緊急通報データを記録
       final emergencyCallData = {
@@ -63,7 +64,7 @@ class _EmergencyCallScreenState extends State<EmergencyCallScreen> {
                 'accuracy': widget.currentLocation!.accuracy,
                 'altitude': widget.currentLocation!.altitude,
                 'heading': widget.currentLocation!.heading,
-                'speed': widget.currentLocation!.speed,
+                'speed': widget.currentLocation!.speed, 
               }
             : null,
         'healthCondition': widget.healthCondition ?? '未記入',
@@ -153,8 +154,8 @@ class _EmergencyCallScreenState extends State<EmergencyCallScreen> {
     // 通知キャンセル
     _notificationService.cancelEmergencyNotification();
     _notificationService.showGeneralNotification(
-      title: '緊急通報終了',
-      body: '緊急通報が終了されました',
+      title: 'よびだしを中止しました',
+      body: '中止しました',
       payload: 'emergency_ended',
     );
 
@@ -286,7 +287,7 @@ class _EmergencyCallScreenState extends State<EmergencyCallScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '通報者情報',
+                      'ユーザー情報',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

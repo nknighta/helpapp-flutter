@@ -40,12 +40,20 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <category
-                    android:name="android.intent.category.DEFAULT" />
-                <category
-                    android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="helpapp" /> //flutterUniversityは任意 </intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accept bare scheme-only deep links, e.g. helpapp://?viewmap=view -->
+                <data android:scheme="helpapp" />
+                <!-- Common developer hosts (emulators / local) -->
+                <data android:scheme="helpapp" android:host="localhost" />
+                <data android:scheme="helpapp" android:host="127.0.0.1" />
+                <data android:scheme="helpapp" android:host="10.0.2.2" />
+                <!-- Typical developer ports (optional) -->
+                <data android:scheme="helpapp" android:host="localhost" android:port="3000" />
+                <data android:scheme="helpapp" android:host="localhost" android:port="8080" />
+                <!-- Production / staging domain (example) -->
+                <data android:scheme="helpapp" android:host="helpapp-website.vercel.app" />
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

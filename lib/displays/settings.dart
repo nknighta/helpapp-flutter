@@ -41,6 +41,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               fontSize: 16,
                             ),
                           ),
+                          const SizedBox(height: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('公式サイト: https://helpapp-intro.vercel.app/'),
+                              const SizedBox(height: 4),
+                              const Text("debug mode"),
+                              TextButton(onPressed: () {
+                                Navigator.of(context).pushNamed(AppRouter.debug);
+                              }, child: const Text('デバッグ画面へ')),
+                              const SizedBox(height: 8),
+                              const Text('Open Source Licenses:'),
+                              const SizedBox(height: 4),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  showLicensePage(
+                                    context: context,
+                                    applicationName: 'まちなか保健室アプリ',
+                                    applicationVersion: 'v0.1.24',
+                                    applicationLegalese: '© 2025',
+                                  );
+                                },
+                                child: const Text('ライセンスを見る'),
+                              ),
+                            ])
                         ],
                       ),
                       TextButton(
@@ -108,57 +134,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('アカウント設定'),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('アカウント設定'),
-                    content: const Text('救助者モードへの切り替え'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('救助者モードへ'),
-                        onPressed: () {
-                          showDialog(context: context, builder: 
-                            (BuildContext context) {
-                              return AlertDialog(
-                              title: const Text('救助者モード'),
-                              content: const Text('救助者モードに切り替えますか？'),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('キャンセル'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                TextButton(
-                                  child: const Text('切り替える'),
-                                  onPressed: () {
-                                    // Implement the logic to switch to rescuer mode
-                                    Navigator.of(context).pop(); // Close the dialog
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('救助者モードに切り替えました。'),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            
-                            );
-                            }
-                          );
-                        },
-                      ),
-                      TextButton(
-                        child: const Text('閉じる'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+              Navigator.of(context).pushNamed(AppRouter.account);
             },
           ),
           const Divider(),

@@ -286,11 +286,7 @@ class _CallDisplayState extends State<CallDisplay> with TickerProviderStateMixin
                         color: Colors.red.shade700,
                       ),
                     ),
-                    SizedBox(height: 4),
-                    Text(
-                      '位置情報、体調、ユーザー情報がFirebaseに記録されます',
-                      style: TextStyle(fontSize: 12, color: Colors.red.shade600),
-                    ),
+                    SizedBox(height: 4)
                   ],
                 ),
               ),
@@ -506,7 +502,6 @@ class _CallDisplayState extends State<CallDisplay> with TickerProviderStateMixin
               _isInitializingLocation = false;
             }
           });
-          print('位置情報が既に利用可能です: ${currentLocation.latitude}, ${currentLocation.longitude}');
           
           // 位置情報が準備できたらすぐにmain初期化を開始
           Future.delayed(Duration(milliseconds: 500), () {
@@ -700,8 +695,6 @@ class _CallDisplayState extends State<CallDisplay> with TickerProviderStateMixin
                     );
                     
                     if (_currentLocation != null) {
-                      print(
-                          'Calling for help at location: ${_currentLocation!.latitude}, ${_currentLocation!.longitude}');
                       _showEmergencyDialog();
                     } else {
                       print('Current location is not available');
