@@ -24,31 +24,32 @@ class FacilityListScreen extends StatefulWidget {
 }
 
 class _FacilityListScreenState extends State<FacilityListScreen> {
+  // ===== Services / Controllers =====
   final DatabaseHelper _db = DatabaseHelper();
   final LocationService _locationService = LocationService();
-
   final TextEditingController _searchController = TextEditingController();
   Timer? _searchDebounce;
 
+  // ===== Data =====
   List<Map<String, dynamic>> _places = [];
   List<Map<String, dynamic>> _filtered = [];
   List<Map<String, dynamic>> _visible = [];
 
+  // ===== Filters / Sorting =====
   Set<String> _categories = {};
   String _activeCategory = 'All';
+  SortOption _sort = SortOption.distance;
 
+  // ===== UI State =====
   bool _loading = true;
   String _error = '';
 
-  // Pagination / incremental load
+  // ===== Pagination =====
   final int _pageSize = 20;
   int _page = 0;
   bool _isLoadingMore = false;
 
-  // Sort
-  SortOption _sort = SortOption.distance;
-
-  // Location awareness
+  // ===== Location =====
   double? _currentLat;
   double? _currentLng;
 
@@ -67,18 +68,22 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
     super.dispose();
   }
 
+  // ===== Search =====
   void _onSearchChanged() {
     _searchDebounce?.cancel();
-    _searchDebounce = Timer(const Duration(milliseconds: 400), () {
-      _applyFiltersAndSort();
-    });
+    _searchDebounce = Timer(
+      const Duration(milliseconds: 400),
+      _applyFiltersAndSort,
+    );
   }
 
+  // ===== Lifecycle / Init =====
   Future<void> _init() async {
     await _initLocation();
     await _fetchPlaces();
   }
 
+  // ===== Location =====
   Future<void> _initLocation() async {
     try {
       final loc = await _locationService.getCurrentLocation();
@@ -93,6 +98,7 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
     }
   }
 
+  // ===== Data Fetch =====
   Future<void> _fetchPlaces() async {
     setState(() {
       _loading = true;
@@ -112,7 +118,7 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
         final data = json.decode(response.body);
         if (data is List) {
           final items =
-              (data as List)
+              data
                   .map(
                     (e) =>
                         e is Map
@@ -121,16 +127,8 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
                   )
                   .toList();
 
-          // Compute helpers and categories
-          for (final item in items) {
-            _attachDistanceIfPossible(item);
-            final cat = (item['category']?.toString() ?? '').trim();
-            if (cat.isNotEmpty) _categories.add(cat);
-          }
-
-          setState(() {
-            _places = items;
-          });
+          _preparePlaces(items);
+          setState(() => _places = items);
           _applyFiltersAndSort();
         } else {
           setState(() => _error = 'サーバーの応答が想定と異なります。');
@@ -144,6 +142,16 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
       setState(() {
         _loading = false;
       });
+    }
+  }
+
+  // ===== Data Helpers =====
+  void _preparePlaces(List<Map<String, dynamic>> items) {
+    _categories.clear();
+    for (final item in items) {
+      _attachDistanceIfPossible(item);
+      final cat = (item['category']?.toString() ?? '').trim();
+      if (cat.isNotEmpty) _categories.add(cat);
     }
   }
 
@@ -196,6 +204,7 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
 
   double _deg2rad(double deg) => deg * (math.pi / 180.0);
 
+  // ===== Filter / Sort =====
   void _applyFiltersAndSort() {
     final String q = _searchController.text.trim().toLowerCase();
 
@@ -252,13 +261,17 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
 
     setState(() {
       _filtered = filtered;
-      // reset visible pagination
-      _page = 0;
-      _visible = [];
+      _resetPagination();
     });
     _loadMore();
   }
 
+  void _resetPagination() {
+    _page = 0;
+    _visible = [];
+  }
+
+  // ===== Pagination =====
   void _loadMore() {
     if (_isLoadingMore) return;
     if (_visible.length >= _filtered.length) return;
@@ -282,11 +295,13 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
     });
   }
 
+  // ===== Refresh =====
   Future<void> _onRefresh() async {
     await _initLocation();
     await _fetchPlaces();
   }
 
+  // ===== Actions =====
   Future<void> _openExternalMap(double? lat, double? lng) async {
     if (lat == null || lng == null) {
       ScaffoldMessenger.of(
@@ -318,30 +333,10 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
 
     Navigator.of(
       context,
-    ).pushNamed(AppRouter.dashboard, arguments: {'selectedFacility': facility});
+    ).pushNamed(AppRouter.map, arguments: {'selectedFacility': facility});
   }
 
-  Widget _buildCategoryChips() {
-    final List<String> cats = ['All', ..._categories.toList()]..sort();
-    return Wrap(
-      spacing: 8,
-      children:
-          cats.map((c) {
-            final selected = (c == _activeCategory);
-            return ChoiceChip(
-              label: Text(c),
-              selected: selected,
-              onSelected: (sel) {
-                setState(() {
-                  _activeCategory = c;
-                });
-                _applyFiltersAndSort();
-              },
-            );
-          }).toList(),
-    );
-  }
-
+  // ===== UI Components =====
   Widget _buildSortMenu() {
     return PopupMenuButton<SortOption>(
       icon: const Icon(Icons.sort),
@@ -399,22 +394,90 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
         trailing: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            if (distance != null) Text(_formatDistance(distance)),
-            const SizedBox(height: 6),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.map, color: Colors.teal),
-                  tooltip: 'マップで表示',
-                  onPressed: () => _goToMap(p),
-                ),
-              ],
-            ),
-          ],
+          children: [if (distance != null) Text(_formatDistance(distance))],
         ),
         onTap: () => _goToMap(p),
+      ),
+    );
+  }
+
+  Widget _buildFilterBottomSheet(BuildContext ctx) {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('種類ごと', style: TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          SingleChildScrollView(
+            child: Wrap(
+              spacing: 8,
+              children:
+                  _categories
+                      .map(
+                        (c) => ChoiceChip(
+                          label: Text(c),
+                          selected: _activeCategory == c,
+                          onSelected: (_) {
+                            setState(() => _activeCategory = c);
+                            _applyFiltersAndSort();
+                            Navigator.of(ctx).pop();
+                          },
+                        ),
+                      )
+                      .toList(),
+            ),
+          ),
+          const SizedBox(height: 8),
+          TextButton(
+            onPressed: () {
+              setState(() => _activeCategory = 'All');
+              _applyFiltersAndSort();
+              Navigator.of(ctx).pop();
+            },
+            child: const Text('クリア'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryScroller() {
+    if (_categories.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: SizedBox(
+        height: 40,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            ChoiceChip(
+              label: const Text('All'),
+              selected: _activeCategory == 'All',
+              onSelected: (_) {
+                setState(() => _activeCategory = 'All');
+                _applyFiltersAndSort();
+              },
+            ),
+            const SizedBox(width: 8),
+            ..._categories
+                .map(
+                  (c) => Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: ChoiceChip(
+                      label: Text(c),
+                      selected: _activeCategory == c,
+                      onSelected: (_) {
+                        setState(() => _activeCategory = c);
+                        _applyFiltersAndSort();
+                      },
+                    ),
+                  ),
+                )
+                .toList(),
+          ],
+        ),
       ),
     );
   }
@@ -424,7 +487,7 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
     return GlobalLayout(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('施設一覧'),
+          title: const Text('ばしょ'),
           actions: [
             IconButton(
               icon: const Icon(Icons.refresh),
@@ -433,57 +496,11 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
             _buildSortMenu(),
             IconButton(
               icon: const Icon(Icons.filter_list),
-              onPressed: () {
-                // open filter sheet / categories
-                showModalBottomSheet(
-                  context: context,
-                  builder:
-                      (ctx) => Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'カテゴリで絞り込む',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 8),
-                            SingleChildScrollView(
-                              child: Wrap(
-                                spacing: 8,
-                                children:
-                                    _categories
-                                        .map(
-                                          (c) => ChoiceChip(
-                                            label: Text(c),
-                                            selected: _activeCategory == c,
-                                            onSelected: (_) {
-                                              setState(
-                                                () => _activeCategory = c,
-                                              );
-                                              _applyFiltersAndSort();
-                                              Navigator.of(ctx).pop();
-                                            },
-                                          ),
-                                        )
-                                        .toList(),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            TextButton(
-                              onPressed: () {
-                                setState(() => _activeCategory = 'All');
-                                _applyFiltersAndSort();
-                                Navigator.of(ctx).pop();
-                              },
-                              child: const Text('クリア'),
-                            ),
-                          ],
-                        ),
-                      ),
-                );
-              },
+              onPressed:
+                  () => showModalBottomSheet(
+                    context: context,
+                    builder: _buildFilterBottomSheet,
+                  ),
             ),
           ],
         ),
@@ -496,7 +513,7 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
                   controller: _searchController,
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.search),
-                    hintText: '名前・カテゴリ・住所で検索',
+                    hintText: '検索',
                     suffixIcon:
                         _searchController.text.isNotEmpty
                             ? IconButton(
@@ -514,42 +531,7 @@ class _FacilityListScreenState extends State<FacilityListScreen> {
               ),
 
               // category chips horizontal
-              if (_categories.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: SizedBox(
-                    height: 40,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        ChoiceChip(
-                          label: const Text('All'),
-                          selected: _activeCategory == 'All',
-                          onSelected: (_) {
-                            setState(() => _activeCategory = 'All');
-                            _applyFiltersAndSort();
-                          },
-                        ),
-                        const SizedBox(width: 8),
-                        ..._categories
-                            .map(
-                              (c) => Padding(
-                                padding: const EdgeInsets.only(right: 8),
-                                child: ChoiceChip(
-                                  label: Text(c),
-                                  selected: _activeCategory == c,
-                                  onSelected: (_) {
-                                    setState(() => _activeCategory = c);
-                                    _applyFiltersAndSort();
-                                  },
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ],
-                    ),
-                  ),
-                ),
+              _buildCategoryScroller(),
 
               Expanded(
                 child:

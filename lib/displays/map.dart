@@ -834,7 +834,7 @@ class _MapScreenState extends State<MapScreen> {
                         icon: Icon(Icons.list),
                         label: FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: Text('施設一覧'),
+                          child: Text('ばしょ'),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
@@ -844,7 +844,7 @@ class _MapScreenState extends State<MapScreen> {
                                 MediaQuery.of(context).size.width < 400
                                     ? 12
                                     : 16,
-                            vertical: 26,
+                            vertical: 22,
                           ),
                           elevation: 4,
                         ),
