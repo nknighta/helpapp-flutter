@@ -1,5 +1,5 @@
 name: jp.ac.chuo.machinaka
-description: "まちなか保健室アプリ"
+description: "Flutter application to assist people with disabilities."
 
 version: 0.1.7+1
 
@@ -69,6 +69,6 @@ flutter:
 flutter_icons:
   android: true
   ios: false
-  image_path: "assets/icons/helpappicon_rounded.png"
+  image_path: "assets/icons/helpappicon_squre.png"
   android_adaptive_icon_background: "#000000"
-  android_adaptive_icon_foreground: "assets/icons/helpappicon_rounded.png"
+  android_adaptive_icon_foreground: "assets/icons/helpappicon_squre.png"
